@@ -29,7 +29,7 @@ const getAllBlogs = async (req, res) => {
     const page = Number(req.query.page) || 1;
 
     //sort the blogs at createdAt or unless specified.
-    blogs.sort('createdAt');
+    // blogs.sort('createdAt');
 
     limit = Number(req.query.limit);
     const skip = (page - 1) * limit;
