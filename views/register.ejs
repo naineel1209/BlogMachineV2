@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Now!!</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="heading">
+            <h1>
+                REGISTER FOR BLOGS WEBSITE
+            </h1>
+
+            <button class="register" onclick="window.location='/login'">
+                LOGIN
+            </button>
+        </div>
+        <div class="register_module">
+            <form action="/register" method="POST">
+                <div class="labels">
+                    <label for="username">USERNAME: <br></label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="labels">
+                    <label for="email">EMAIL:</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div class="labels">
+                    <label for="password">PASSWORD: <br>
+                    </label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+        <div class="error" style="background-color: coral; border-radius: 5px;"></div>
+    </div>
+
+    <%- include('./partials/axios.ejs') %>
+        <script>
+            //check if axios is available
+            if (axios) {
+                console.log("YESSSSS");
+            }
+            const form = document.getElementsByTagName("form")[0];
+            console.log(form);
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                //validate the password so that we don't have to make the request
+                if (!validatePassword(document.querySelector("#password").value)) {
+                    document.querySelector(".error").style.backgroundColor = "coral";
+                    document.querySelector(".error").textContent = "INVALID PASSWORD! PLEASE ENTER A VALID PASSWORD!"
+                    document.querySelector(".error").style.padding = "1rem"
+
+                    return;
+                }
+
+                //FORM DATA from from Object
+                const formData = new FormData(form);
+
+                //axios request
+                const res = await axios.post('/register', formData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then(data => {
+                    return data.data;
+                })
+
+                //if user created
+                if (res.status === 'ok') {
+                    document.querySelector(".error").textContent = "USER CREATED!";
+                    document.querySelector(".error").style.backgroundColor = "lightgreen";
+                    document.querySelector(".error").style.color = "black";
+                    document.querySelector(".error").style.padding = "1rem"
+
+                    const btn = document.createElement("button");
+                    btn.classList.add('loginBtn');
+                    btn.innerHTML = "To the Login Page"
+                    document.querySelector(".error").appendChild(btn);
+
+                    btn.onclick = () => {
+                        window.location = "http://localhost:3000/login"
+                    };
+
+                    //if user was not created
+                } else {
+                    document.querySelector(".error").textContent = "USER WASN'T CREATED. EMAIL ID IS ALREADY IN USE FOR OTHER ACCOUNT "
+                    document.querySelector(".error").style.backgroundColor = "coral";
+                    document.querySelector(".error").style.padding = "1rem"
+                }
+
+                //removes the values from the input elements
+                document.querySelectorAll('input').forEach(ele => {
+                    if (ele.type === 'submit') {
+                        return;
+                    }
+                    ele.value = "";
+                });
+            })
+
+
+            function validatePassword(password) {
+                if (password.length < 8 || password.length > 25) {
+                    return false;
+                }
+
+                if (!password.match(/^[a-zA-Z0-9]{8,}$/)) {
+                    return false; //matches regex for {8, or more times then only matches}
+                }
+
+                return true;
+            }
+        </script>
+</body>
+
+</html>

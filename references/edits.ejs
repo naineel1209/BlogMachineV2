@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit An Article</title>
+    <%- include('./partials/fontAwesome.ejs')%>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="/styles/styles_createArticle.css">
+</head>
+
+<body>
+    <%- include('./partials/headers.ejs') %>
+
+        <div class="container_3 ">
+            <form class="row form-floating" id="form" action="/addArticle" method="post">
+                <!-- <div>
+                    <label for="id" class="form-label">Id: <span class="text-danger">*</span></label>
+                    class="form-control" value='<%=article[0]._id%>'>
+                        <input readonly required style="font: 1em sans-serif;" type=" text" id="id" name="id">
+                </div> -->
+                <div>
+                    <label for="title" class="form-label">Title: <span class="text-danger">*</span></label>
+                    <input required style="font: 1em sans-serif;" type=" text" id="title" name="title"
+                        class="form-control" value='<%=article[0].title%>'>
+                </div>
+                <div class="col-md-6">
+                    <label for=" author" class="form-label">Author: <span class="text-danger">*</span></label>
+                    <input required style="font: 1em sans-serif;" type="text" id="author" name="author"
+                        class="form-control" value="<%= article[0].author%>">
+                </div>
+                <div class="col-md-6">
+                    <label for=" imageUrl" class="form-label">Image Url: <span class="text-danger">*</span></label>
+                    <input required style="font: 1em sans-serif;" type="url" id="imageUrl" name="imageUrl"
+                        class="form-control" value="<%= article[0].imageUrl%>">
+                </div>
+                <div>
+                    <label for=" body" class="form-label">Body: <span class="text-danger">*</span></label>
+                    <textarea required style="font: 1em sans-serif;" id="body" name="body"
+                        class="form-control rounded-3" value=""><%= article[0].body%></textarea>
+                </div>
+                <div class="col">
+                    <label for="tags" class="form-label">Tags: <span class="text-danger">*</span></label>
+                    <input required style="font: 1em sans-serif; margin: 5px 0;" type="text" name="tags" id="tags"
+                        class="form-control" placeholder="Leave a space and add tags" value="<%= article[0].tags[0]%>">
+                </div>
+                <div>
+                    <button class="btn btn-lg btn-danger" type="submit">Create Article</button>
+                </div>
+            </form>
+            <h2><button class="btn btn-outline-primary"><a style="text-decoration: none;" href="/home"> BACK TO HOMEPAGE
+                    </a></button></h2>
+        </div>
+
+        <div class="error">
+
+        </div>
+        <%- include('./partials/footer.ejs')%>
+
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+            <script src="/scripts/script_editArticle.js">
+            </script>
+</body>
+
+</html>

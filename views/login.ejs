@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Now!!!</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="heading">
+            <h1>
+                LOGIN FOR BLOGS WEBSITE
+            </h1>
+
+            <button class="register" onclick="window.location='/register'">
+                REGISTER
+            </button>
+        </div>
+        <div class="register_module">
+            <form action="/register" method="POST">
+                <div class="labels">
+                    <label for="email">EMAIL:</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div class="labels">
+                    <label for="password">PASSWORD: <br>
+                    </label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+        <div class="error" style="background-color: coral; border-radius: 5px;"></div>
+    </div>
+
+    <%- include('./partials/axios.ejs') %>
+        <script>
+            if (axios) {
+                console.log("YESSSSS");
+            }
+            const form = document.getElementsByTagName("form")[0];
+
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                if (!validatePassword(document.querySelector("#password").value)) {
+                    document.querySelector(".error").textContent = "INVALID PASSWORD! PLEASE ENTER A VALID PASSWORD!"
+                    document.querySelector(".error").style.padding = "1rem"
+
+                    return;
+                }
+
+                const formData = new FormData(form);
+
+                const res = await axios.post('/login', formData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then(data => {
+                    return data.data;
+                })
+
+                console.log(res);
+
+                if (res.status === 'ok') {
+
+                    //add user created and login page
+                    document.querySelector(".error").textContent = res.message;
+                    document.querySelector(".error").style.backgroundColor = "lightgreen";
+                    document.querySelector(".error").style.color = "black";
+                    document.querySelector(".error").style.padding = "1rem";
+                    document.querySelector(".error").width = '50%';
+                    window.location = "http://localhost:3000/home";
+
+                } else {
+                    document.querySelector(".error").style.backgroundColor = "coral";
+                    document.querySelector(".error").textContent = res.message;
+                    document.querySelector(".error").style.padding = "1rem";
+                }
+            })
+
+
+            function validatePassword(password) {
+                if (password.length < 8 || password.length > 25) {
+                    return false;
+                }
+
+                if (!password.match(/^[a-zA-Z0-9]{8,}$/)) {
+                    return false; //matches regex for {8, or more times then only matches}
+                }
+
+                return true;
+            }
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG MACHINE</title>
+    <%- include('./partials/fontAwesome.ejs')%>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="/styles/myprofile.css">
+</head>
+
+<body>
+    <%- include('./partials/headers.ejs')%>
+        <%- console.log(user)%>
+            <div class="container_1">
+                <div class="title_block">
+                    <h2 class="profile_heading profile_title" data-selected="user_profile"> USER PROFILE </h2>
+                    <h2 class="profile_heading" data-selected="blogs"> ALL ARTICLES </h2>
+                </div>
+
+                <div class="user_view">
+                    <div class="user_profile">
+                        <!-- <%= user._id %>
+                        <%= user.name %>
+                            <%= user.email %> -->
+                        <form class="form-floating">
+                            <div>
+                                <label for="user_id" class="form-label">USER ID:</label>
+                                <input required style="font: 1rem sans-serif;" type="text" id="user_id" name="user_id"
+                                    readonly class="form-control" value="<%=user._id%>">
+                            </div>
+                            <div class="">
+                                <label for="email" class="form-label">Email:</label>
+                                <input required style="font: 1rem sans-serif;" type="text" id="email" name="email"
+                                    class="form-control" value="<%= user.email%>" readonly>
+                            </div>
+                            <div class="">
+                                <label for="name" class="form-label">Name:</label>
+                                <input required style="font: 1rem sans-serif;" type="text" id="name" name="name"
+                                    class="form-control" value="<%= user.username%>" readonly>
+                            </div>
+                            <div>
+                                <label for="createdAt" class="form-label">Account Created At: </label>
+                                <input required style="font: 1rem sans-serif;" type="text" id="createdAt"
+                                    name="createdAt" class="form-control" value="<%= user.createdAt%>" readonly>
+                            </div>
+                        </form>
+
+                        <div class="btns">
+                            <div class="changePassword">
+                                <a href="/change-password"><button class="btn btn-outline-primary">CHANGE
+                                        PASSWORD</button></a>
+                            </div>
+                            <div class="">
+                                <button class="btn btn-outline-danger logout">LOGOUT</button></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blogs">
+                        <div class="blogs_2">
+                            <% if (blogs.length < 1) { %>
+                                <h2 class="mt-3 mb-3" style="text-align: center;">You haven't published any blogs <br>
+                                    You can write for us at
+                                </h2>
+                                <button style="text-align: center; display: block; margin: auto; margin-bottom: 1rem;"
+                                    class="btn btn-outline-primary">
+                                    <a style="text-decoration: none; color: inherit;" href="/createForm">Publish An
+                                        Article
+                                        With
+                                        Us!
+                                    </a>
+                                </button>
+                                <% } %>
+                                    <%blogs.forEach(blog=> {%>
+                                        <div class="article_title">
+                                            <div class="img_block">
+                                                <img src="<%=blog.imageUrl%>" alt="There was an image here!"
+                                                    class="src">
+                                            </div>
+                                            <!-- <div id="machoMan"> -->
+                                            <h2 style="text-align: center;">
+                                                <%= blog.title%>
+                                            </h2>
+
+                                            <div class="buttons">
+                                                <button class="btn btn-outline-primary" id=""><a
+                                                        style="text-decoration: none; color: inherit;"
+                                                        href="/blogs/<%= blog._id %>">READ
+                                                        MORE...</a></button>
+                                                </button>
+                                                <button class="btn btn-outline-secondary" id=""><a
+                                                        style="text-decoration: none; color: inherit;"
+                                                        href="/edits/<%= blog._id %>"> EDIT THIS ARTICLE</a></button>
+                                                </button>
+                                                <button class="btn btn-outline-dark delete" id="<%= blog._id %>"
+                                                    onclick="onClickHandler(this)">DELETE THIS
+                                                    ARTICLE</button>
+                                                <!-- </div>-->
+                                            </div>
+                                        </div>
+                                        <% }) %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="error">
+
+                </div>
+            </div>
+
+            <%- include('./partials/footer.ejs')%>
+                <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+                <script src="https://kit.fontawesome.com/d8ad7f3af4.js" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                    crossorigin="anonymous"></script>
+                <script>
+                    if (axios) {
+                        console.log("YESSS");
+                    }
+
+                    //delete functionality
+                    async function onClickHandler(us) {
+                        // e.preventDefault();
+
+                        const delURL = us.attributes.id.value;
+                        console.log(delURL);
+
+                        const resp = await axios.delete(`/delete/?id=${delURL}`).then(res => res.data);
+                        console.log(resp);
+                        window.location.reload();
+                    }
+
+                    //logout user from server
+                    const logOutBtns = document.querySelector('.logout')
+
+                    logOutBtns.addEventListener('click', async function (e) {
+                        const resp = await axios.delete('/logout').then(res => res.data);
+
+                        if (resp.status === 'ok') {
+                            window.location.reload();
+                        } else {
+                            document.querySelector('error').style.backgroundColor = 'red';
+                            document.querySelector('error').innerHTML = "Error Occured Try Again Later"
+                        }
+                    });
+
+
+                    //viewing functionality
+                    const profileHeading = Array.from(document.getElementsByClassName('profile_heading'));
+                    const userView = document.querySelector(".user_view");
+
+                    profileHeading.forEach(function (ele) {
+                        ele.addEventListener('click', (e) => {
+                            const selected = (ele.dataset.selected);
+
+                            //remove the profile_title from all of the profile_heading
+                            profileHeading.forEach(title => {
+                                title.classList.remove('profile_title');
+                            })
+
+                            //remove the previously selected from the user view
+                            Array.from(userView.children).forEach(child => {
+                                child.style.display = 'none';
+                            })
+
+                            //now just select the one asked for and then
+                            const view = document.getElementsByClassName(selected)[0];
+                            ele.classList.add('profile_title');
+                            view.style.display = "block";
+                        });
+                    })
+                </script>
+
+</body>
+
+</html>

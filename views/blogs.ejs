@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOGS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+
+        html {
+            font-family: 'Tilt Neon', cursive;
+        }
+
+        .button {
+            padding: 1rem;
+            background-color: aliceblue;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        .button a {
+            text-decoration: none;
+            font-size: larger;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>BLOGS Vamosssssss</h1>
+    <%= user %>
+        ID: <%= user._id%>
+            <h2>
+                NAME: <%= user.username%>
+                    <br>
+                    EMAIL ID: <%= user.email%>
+            </h2>
+
+            <button class="button"><a href="/delete" class="delete">LOGOUT</a></button>
+
+            <%- include('./partials/axios.ejs')%>
+
+                <script>
+                    if (axios) {
+                        console.log("YESSSSSSSSSSSSSSSSSSSSSSS");
+                    }
+
+                    const aHREF = document.querySelector('.delete');
+                    aHREF.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        const resp = await axios.delete('/blogs').then(res => res.data);
+
+                        if (resp.status === 'ok') {
+                            window.location.reload();
+                        }
+                    })
+                </script>
+</body>
+
+</html>
