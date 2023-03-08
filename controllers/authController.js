@@ -48,7 +48,7 @@ async function postLogin(req, res) {
                 console.log(accessToken);
 
                 //set the cookie
-                res.cookie('jwt', { accessToken: accessToken }, { httpOnly: true, sameSite: 'none', secure: false, maxAge: 3600 * 24 * 1000 });
+                res.cookie('jwt', { accessToken: accessToken }, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 3600 * 24 * 1000 });
 
                 //return the message
                 return res.status(201).send({ status: 'ok', message: "Login Approved" });
