@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark "
     style="border-bottom: 2px solid black; border-bottom-left-radius: 5px;  border-bottom-right-radius: 5px; padding: 3px;">
-    <div class="heading w-100 ">
+    <div class="heading">
         <img src="https://www.svgrepo.com/show/168556/blog.svg" width="50" height="50" class="d-inline-block align-top"
             alt="" style="background-color: white; padding: 5px; margin: 5px; border-radius: 50%;">
         <a class="navbar-brand" href="/home" style="font-size: larger;">Blog Machine</a>
@@ -13,22 +13,23 @@
         <div class="links">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                    <a class="w-100 nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/blogs?limit=0">All Articles</a>
+                    <a class="w-100 nav-link" href="/blogs?limit=0">All Articles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/my-profile">My Profile</a>
+                    <a class="w-100 nav-link" href="/my-profile">My Profile</a>
                 </li>
+                <div class="btn ">
+                    <button style="text-align: center;" class="btn btn-outline-primary">
+                        <a class="active" style="text-decoration: none; color: inherit;" href="/createForm">Publish
+                            An
+                            Article
+                            With Us!</a>
+                    </button>
+                </div>
             </ul>
-        </div>
-        <div class="btn ">
-            <button style="text-align: center;" class="btn btn-outline-primary">
-                <a class="active" style="text-decoration: none; color: inherit;" href="/createForm">Publish An
-                    Article
-                    With Us!</a>
-            </button>
         </div>
     </div>
 </nav>
@@ -36,6 +37,9 @@
 <style>
     nav {
         width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .header {
@@ -48,6 +52,10 @@
     .heading {
         display: flex;
         align-items: center;
+    }
+
+    .mojo {
+        justify-content: flex-end;
     }
 
     .heading>* {

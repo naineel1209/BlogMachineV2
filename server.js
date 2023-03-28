@@ -12,7 +12,7 @@ const userRouter = require('./routes/userRoutes');
 const notFound = require('./middleware/not-found');
 
 //logger middleware
-app.use(morgan('short'));
+app.use(morgan('dev'));
 
 //set views to ejs
 app.set('view engine', 'ejs');

@@ -18,7 +18,7 @@ const getHomepage = async (req, res) => {
     console.log("getMyBlogs");
     const limit = req.query.limit || 5;
 
-    const blogs = await Blogs.find().limit(limit);
+    const blogs = await Blogs.find().limit(limit).sort('createdAt');
     return res.render('index', { blogs: blogs });
 }
 
@@ -28,8 +28,8 @@ const getAllBlogs = async (req, res) => {
     let blogs = Blogs.find();
     const page = Number(req.query.page) || 1;
 
-    //sort the blogs at createdAt or unless specified.
-    // blogs.sort('createdAt');
+    // sort the blogs at createdAt or unless specified.
+    blogs.sort('-createdAt');
 
     limit = Number(req.query.limit);
     const skip = (page - 1) * limit;
